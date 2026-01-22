@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Raffi Setiawan Putra</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #020617; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- KOTAK PROFIL --- */
+        .card {
+            position: relative;
+            z-index: 2;
+            width: 360px;
+            padding: 45px 30px;
+            background: #ffffff;
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-top: 10px solid #ffb800; /* Aksen kuning sesuai gambar */
+        }
+
+        /* --- FOTO PROFIL DENGAN CAHAYA TERPUSAT (CENTERED GLOW) --- */
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            
+            /* Cahaya dibuat 0 0 agar benar-benar di tengah */
+            box-shadow: 0 0 35px rgba(255, 184, 0, 0.8); 
+            
+            /* Animasi denyut cahaya agar konsisten tapi hidup */
+            animation: glow-pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 20px rgba(255, 184, 0, 0.6); }
+            50% { box-shadow: 0 0 45px rgba(255, 184, 0, 0.9); }
+            100% { box-shadow: 0 0 20px rgba(255, 184, 0, 0.6); }
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .role {
+            font-size: 12px;
+            font-weight: 700;
+            color: #3b82f6;
+            background: #eff6ff;
+            padding: 8px 24px;
+            border-radius: 100px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 35px;
+        }
+
+        /* --- INFO TABLE --- */
+        .info-container {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .label {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .value {
+            color: #1e293b;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="snow"></canvas>
+
+    <div class="card">
+        <div class="profile-img">
+            <img src="tsukasa.jpg" alt="Foto Profil">
+        </div>
+        
+        <h1>Raffi Setiawan Putra</h1>
+        <div class="role">Cloud Engineer</div>
+
+        <div class="info-container">
+            <div class="info-row">
+                <span class="label">Kelas</span>
+                <span class="value">XI SIJA 2</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Nomor Absen</span>
+                <span class="value">26</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('snow');
+        const ctx = canvas.getContext('2d');
+        let width, height, snowflakes = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function createSnowflake() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 2 + 1,
+                speed: Math.random() * 1 + 0.5,
+                opacity: Math.random() * 0.8 + 0.2
+            };
+        }
+
+        for (let i = 0; i < 150; i++) snowflakes.push(createSnowflake());
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            snowflakes.forEach(flake => {
+                ctx.beginPath();
+                ctx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+                ctx.fill();
+                flake.y += flake.speed;
+                if (flake.y > height) flake.y = -10;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
